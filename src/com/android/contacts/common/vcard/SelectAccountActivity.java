@@ -23,8 +23,11 @@ import android.os.Bundle;
 import android.util.Log;
 
 import com.android.contacts.common.R;
+import com.android.contacts.common.SimContactsConstants;
 import com.android.contacts.common.model.AccountTypeManager;
+import com.android.contacts.common.model.account.AccountType;
 import com.android.contacts.common.model.account.AccountWithDataSet;
+import com.android.contacts.common.model.account.PhoneAccountType;
 import com.android.contacts.common.util.AccountSelectionUtil;
 
 import java.util.List;
@@ -52,25 +55,15 @@ public class SelectAccountActivity extends Activity {
     protected void onCreate(Bundle bundle) {
         super.onCreate(bundle);
 
-        // There's three possibilities:
-        // - more than one accounts -> ask the user
-        // - just one account -> use the account without asking the user
+        // There are two possibilities:
+        // - one or more than one accounts -> ask the user (user can select phone-local also)
         // - no account -> use phone-local storage without asking the user
         final int resId = R.string.import_from_vcf_file;
         final AccountTypeManager accountTypes = AccountTypeManager.getInstance(this);
         final List<AccountWithDataSet> accountList = accountTypes.getAccounts(true,
                 AccountTypeManager.FLAG_ALL_ACCOUNTS_WITHOUT_SIM);
         if (accountList.size() == 0) {
-            Log.w(LOG_TAG, "Account does not exist");
-            finish();
-            return;
-        } else if (accountList.size() == 1) {
-            final AccountWithDataSet account = accountList.get(0);
-            final Intent intent = new Intent();
-            intent.putExtra(ACCOUNT_NAME, account.name);
-            intent.putExtra(ACCOUNT_TYPE, account.type);
-            intent.putExtra(DATA_SET, account.dataSet);
-            setResult(RESULT_OK, intent);
+            Log.w(LOG_TAG, "Select local storage account");
             finish();
             return;
         }

@@ -70,6 +70,7 @@ public final class AccountsListAdapter extends BaseAdapter {
         mContext = context;
         mAccountTypes = AccountTypeManager.getInstance(context);
         mAccounts = getAccounts(accountListFilter);
+
         if (currentAccount != null
                 && !mAccounts.isEmpty()
                 && !mAccounts.get(0).equals(currentAccount)

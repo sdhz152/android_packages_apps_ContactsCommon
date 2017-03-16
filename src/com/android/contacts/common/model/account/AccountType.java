@@ -198,6 +198,9 @@ public abstract class AccountType {
     }
 
     public CharSequence getDisplayLabel(Context context) {
+        if (PhoneAccountType.ACCOUNT_TYPE.equals(accountType)) {
+            return context.getResources().getString(R.string.local_storage_account);
+        }
         // Note this resource is defined in the sync adapter package, not resourcePackageName.
         return getResourceText(context, syncAdapterPackageName, titleRes, accountType);
     }
@@ -277,6 +280,9 @@ public abstract class AccountType {
     }
 
     public Drawable getDisplayIcon(Context context) {
+        if (PhoneAccountType.ACCOUNT_TYPE.equals(accountType)) {
+            return context.getResources().getDrawable(R.drawable.ic_smartphone_24dp);
+        }
         return getDisplayIcon(context, titleRes, iconRes, syncAdapterPackageName);
     }
 

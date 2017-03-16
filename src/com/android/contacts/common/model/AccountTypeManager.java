@@ -461,6 +461,16 @@ class AccountTypeManagerImpl extends AccountTypeManager
             extensionPackages.addAll(accountType.getExtensionPackageNames());
         }
 
+        // Add the local account, it does not appear in SyncAdapterTypes.
+        AccountType localAccountType = new PhoneAccountType(mContext, mContext.getPackageName());
+        addAccountType(localAccountType, accountTypesByTypeAndDataSet, accountTypesByType);
+
+        AccountWithDataSet localAccountWithDataSet = new AccountWithDataSet(
+            PhoneAccountType.ACCOUNT_NAME, PhoneAccountType.ACCOUNT_TYPE, null);
+        allAccounts.add(localAccountWithDataSet);
+        contactWritableAccounts.add(localAccountWithDataSet);
+        groupWritableAccounts.add(localAccountWithDataSet);
+
         // If any extension packages were specified, process them as well.
         if (!extensionPackages.isEmpty()) {
             Log.d(TAG, "Registering " + extensionPackages.size() + " extension packages");
